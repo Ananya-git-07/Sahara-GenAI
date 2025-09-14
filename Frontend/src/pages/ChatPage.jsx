@@ -114,10 +114,11 @@ const ChatPage = () => {
 
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await axios.post('http://localhost:5001/api/chat',
-        { message: messageToSend },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+        const apiUrl = `${import.meta.env.VITE_API_BASE_URL}/api/chat`;
+        const response = await axios.post(apiUrl,
+            { message: messageToSend },
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
 
       const { reply, audioUrl } = response.data;
       const aiMessage = { sender: 'ai', text: reply, audioUrl };

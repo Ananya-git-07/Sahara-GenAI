@@ -13,7 +13,10 @@ const authenticateToken = require('./middleware/authenticateToken');
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 const app = express();
-app.use(cors());
+const clientURL = process.env.CLIENT_ORIGIN_URL;
+app.use(cors({
+  origin: clientURL
+}));
 app.use(express.json());
 
 // --- Database Connection ---

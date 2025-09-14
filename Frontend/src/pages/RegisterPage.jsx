@@ -12,7 +12,8 @@ const RegisterPage = () => {
         e.preventDefault();
         setError('');
         try {
-            const response = await axios.post('http://localhost:5001/api/auth/register', { username, password });
+            const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001';
+            const response = await axios.post(`${apiBaseUrl}/api/auth/register`, { username, password });
             localStorage.setItem('accessToken', response.data.accessToken);
             localStorage.setItem('refreshToken', response.data.refreshToken);
             navigate('/chat');
