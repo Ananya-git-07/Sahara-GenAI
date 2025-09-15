@@ -20,11 +20,16 @@ router.post('/register', async (req, res) => {
             return res.status(400).json({ message: 'User already exists' });
         }
         const user = new User({ username, password });
-        await user.save();
+        await user.save(); // The error is most likely happening here
         const tokens = generateTokens(user);
         res.status(201).json(tokens);
     } catch (error) {
-        res.status(500).json({ message: 'Server error' });
+        // --- THIS IS THE IMPORTANT NEW PART ---
+        console.error("--- REGISTRATION FAILED ---");
+        console.error("The error occurred trying to save a new user:");
+        console.error(error); // This will print the full Mongoose error object
+
+        res.status(500).json({ message: 'Server error during registration.' });
     }
 });
 
@@ -39,7 +44,10 @@ router.post('/login', async (req, res) => {
         const tokens = generateTokens(user);
         res.json(tokens);
     } catch (error) {
-        res.status(500).json({ message: 'Server error' });
+        // Adding better logging here too, just in case.
+        console.error("--- LOGIN FAILED ---");
+        console.error(error);
+        res.status(500).json({ message: 'Server error during login.' });
     }
 });
 
